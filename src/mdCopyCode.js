@@ -22,46 +22,60 @@ const SVG_TAG =
   '</g>' +
   '</svg>';
 
+/**
+ *
+ * @param {String} langName code language
+ */
+function createDiv(langName) {
+  const div = document.createElement('div');
+  div.style =
+    'background-color:rgb(128 128 128 / 40%); padding:6px 6px 6px 10px; font-family: var(--vscode-editor-font-family, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace)';
+  if (langName) {
+    const languageSpan = (_ => {
+      const languageSpan = document.createElement('span');
+      languageSpan.appendChild(document.createTextNode(langName));
+      return languageSpan;
+    })();
+    div.append(languageSpan);
+  }
+  const copiedSpan = (_ => {
+    const copiedSpan = document.createElement('span');
+    copiedSpan.style = 'margin-left:1em;';
+    return copiedSpan;
+  })();
+  const svgSpan = (_ => {
+    const svgSpan = document.createElement('span');
+    svgSpan.innerHTML = SVG_TAG;
+    svgSpan.style = 'margin-left:1em; cursor:pointer;';
+    svgSpan.title = 'copy code';
+    svgSpan.addEventListener('click', (elem, ev) => {
+      document.getSelection().selectAllChildren(svgSpan.parentNode.nextSibling);
+      document.execCommand('copy');
+      document.getSelection().empty();
+      copiedSpan.textContent = 'Copied.';
+      setTimeout(() => {
+        copiedSpan.textContent = '';
+      }, 1500);
+    });
+    return svgSpan;
+  })();
+  div.append(svgSpan, copiedSpan);
+  return div;
+}
+
+// HTML exported by VS Code 'Markdown all in one' extension
 document.querySelectorAll('pre > code').forEach(code => {
+  const langName = code.className ? code.className.replace('language-', '') : null;
   const pre = code.parentNode;
-  pre.parentNode.insertBefore(
-    (_ => {
-      const div = document.createElement('div');
-      div.style =
-        'background-color:rgb(128 128 128 / 40%); padding:6px 6px 6px 10px; font-family: var(--vscode-editor-font-family, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace)';
-      if (code.className) {
-        const languageSpan = (_ => {
-          const languageSpan = document.createElement('span');
-          languageSpan.appendChild(document.createTextNode(code.className.replace('language-', '')));
-          return languageSpan;
-        })();
-        div.append(languageSpan);
-      }
-      const copiedSpan = (_ => {
-        const copiedSpan = document.createElement('span');
-        copiedSpan.style = 'margin-left:1em;';
-        return copiedSpan;
-      })();
-      const svgSpan = (_ => {
-        const svgSpan = document.createElement('span');
-        svgSpan.innerHTML = SVG_TAG;
-        svgSpan.style = 'margin-left:1em; cursor:pointer;';
-        svgSpan.title = 'copy code';
-        svgSpan.addEventListener('click', (elem, ev) => {
-          document.getSelection().selectAllChildren(svgSpan.parentNode.nextSibling.firstChild);
-          document.execCommand('copy');
-          document.getSelection().empty();
-          copiedSpan.textContent = 'Copied.';
-          setTimeout(() => {
-            copiedSpan.textContent = '';
-          }, 1500);
-        });
-        return svgSpan;
-      })();
-      div.append(svgSpan, copiedSpan);
-      return div;
-    })(),
-    pre
-  );
+  pre.parentNode.insertBefore(createDiv(langName), pre);
+  pre.style = 'margin-top:0px; padding-top:4px;';
+});
+
+// HTML rendered by GitHub
+document.querySelectorAll('div.highlight > pre').forEach(pre => {
+  const langName = [...pre.parentElement.classList]
+    .filter(c => c.startsWith('highlight-source-'))
+    .map(c => c.substring(17));
+  pre.parentNode.insertBefore(createDiv(langName), pre);
   pre.style = 'margin-top:0px; padding-top:4px;';
 });
