@@ -17,7 +17,7 @@ task('default', () => {
       })
     )
     .pipe(dest(paths.jsDist))
-    .pipe(uglify())
+    .pipe(uglify({ mangle: { toplevel: true } }))
     .pipe(rename({ extname: '.min.js' }))
     .pipe(dest(paths.jsDist));
 });
