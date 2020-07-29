@@ -2,7 +2,8 @@
 
 Add a copy button on fenced code block (`<pre><code>`) in markdown (and HTML).
 
-Note: You can't embed any javascript in markdown at GitHub.
+**Note:** You can't embed any javascript in markdown at GitHub.  
+This script works on the markdown documents exported as HTML.
 
 ## Image
 
