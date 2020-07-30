@@ -9,7 +9,7 @@ const paths = {
   jsDist: './js/',
 };
 
-task('default', () => {
+task('build', () => {
   return src(paths.jsSrc)
     .pipe(
       babel({
@@ -21,3 +21,5 @@ task('default', () => {
     .pipe(rename({ extname: '.min.js' }))
     .pipe(dest(paths.jsDist));
 });
+
+task('default',series('build'));
