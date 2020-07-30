@@ -23,8 +23,4 @@ Get-ChildItem
 
 ## Bonus: bookmarklet
 
-Bookmark this code.
-
-```
-javascript:(function(d,s){ s=d.createElement('script');s.src='//cdn.jsdelivr.net/gh/standstonecraft/Markdown-CopyCode/js/mdCopyCode.min.js';d.body.appendChild(s);})(document)
-```
+Bookmark [this code](js/../bookmarklet/mdCopyCode.min.txt).
